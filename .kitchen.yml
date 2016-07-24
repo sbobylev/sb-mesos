@@ -1,0 +1,59 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: centos/7
+    attributes:
+      mesos:
+        masters_hosts:
+          192.168.1.200:
+            zookeeper_myid: "1"
+          192.168.1.201:
+            zookeeper_myid: "2"
+
+provisioner:
+    name: chef_zero
+
+suites:
+  - name: mesos-master-1
+    driver:
+      vm_hostname: mesos-master-1
+      network:
+      - ["public_network", {ip: "192.168.1.200", bridge: "wlp4s0"}]
+      customize:
+        memory: 2048
+    run_list:
+      - recipe[sb-mesos::mesos-yum-repos]
+      - recipe[sb-mesos::mesos-master]
+    attributes:
+      mesos:
+        primary_nic: "eth1"
+  - name: mesos-master-2
+    driver:
+      vm_hostname: mesos-master-2
+      network:
+      - ["public_network", {ip: "192.168.1.201", bridge: "wlp4s0"}]
+      customize:
+        memory: 2048
+    run_list:
+      - recipe[sb-mesos::mesos-yum-repos]
+      - recipe[sb-mesos::mesos-master]
+    attributes:
+      mesos:
+        primary_nic: "eth1"
+  - name: mesos-slave-1
+    driver:
+      vm_hostname: mesos-slave-2
+      network:
+      - ["public_network", {ip: "192.168.1.210", bridge: "wlp4s0"}]
+      customize:
+        memory: 4096
+    run_list:
+      - recipe[sb-mesos::mesos-yum-repos]
+    attributes:
+      mesos:
+        primary_nic: "eth1"
