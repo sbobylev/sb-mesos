@@ -10,13 +10,6 @@ package 'mesosphere-zookeeper'
 
 raise 'node[\'mesos\'][\'masters_hosts\'] does not have any master hosts added' if node['mesos']['masters_hosts'].empty?
 
-###
-#puts keys
-#aaa = ["foo", "bar", "baz"]
-#aaa.map { |word| "prepend-#{word}" }
-#puts aaa
-###
-
 service 'zookeeper' do
   supports :status => true, :restart => true, :reload => true
   action [ :enable, :start ]
