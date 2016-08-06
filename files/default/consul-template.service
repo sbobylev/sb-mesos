@@ -1,0 +1,15 @@
+[Unit]
+Description=consul-template - The daemon consul-template queries a Consul instance and updates any number of specified templates on the file system.
+Documentation=https://github.com/hashicorp/consul-template
+Requires=network-online.target
+After=network-online.target docker.service
+
+[Service]
+EnvironmentFile=-/etc/sysconfig/consul-template
+ExecStart=/usr/local/sbin/consul-template $OPTIONS -config=/etc/consul-template/configs/
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

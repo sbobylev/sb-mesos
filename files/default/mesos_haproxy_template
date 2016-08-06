@@ -1,0 +1,9 @@
+defaults
+    mode tcp
+    timeout connect  5s
+    timeout server  30s
+    timeout client  30s
+
+listen http
+    bind *:80{{range service "http"}}
+        server {{.Node}} {{.Address}}:{{.Port}}{{end}}

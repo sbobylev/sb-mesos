@@ -1,0 +1,7 @@
+consul = "<%= node['mesos']['host_ip'] %>:8500"
+
+template {
+  source = "/etc/consul-template/templates/haproxy.ctmpl"
+  destination = "/etc/haproxy/haproxy.cfg"
+  command = "service haproxy restart"
+}
