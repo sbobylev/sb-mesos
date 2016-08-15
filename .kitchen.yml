@@ -30,6 +30,7 @@ suites:
         memory: 2048
     run_list:
       - recipe[sb-mesos::mesos-yum-repos]
+      - recipe[sb-mesos::mesos-service-discovery]
       - recipe[sb-mesos::mesos-master]
     attributes:
       mesos:
@@ -43,6 +44,7 @@ suites:
         memory: 2048
     run_list:
       - recipe[sb-mesos::mesos-yum-repos]
+      - recipe[sb-mesos::mesos-service-discovery]
       - recipe[sb-mesos::mesos-master]
     attributes:
       mesos:
@@ -56,6 +58,7 @@ suites:
         memory: 4096
     run_list:
       - recipe[sb-mesos::mesos-yum-repos]
+      - recipe[sb-mesos::mesos-service-discovery]
     attributes:
       mesos:
         primary_nic: "eth1"

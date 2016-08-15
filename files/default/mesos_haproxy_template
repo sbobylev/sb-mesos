@@ -1,9 +1,17 @@
 defaults
-    mode tcp
-    timeout connect  5s
-    timeout server  30s
-    timeout client  30s
+	timeout connect  5s
+	timeout server  30s
+	timeout client  30s
 
-listen http
-    bind *:80{{range service "http"}}
-        server {{.Node}} {{.Address}}:{{.Port}}{{end}}
+frontend http_front
+	bind *:80
+	option forwardfor
+	default_backend http_backend
+
+backend http_backend
+	mode http
+	balance roundrobin
+	option forwardfor
+	option httpchk
+	balance roundrobin{{range service "http"}}
+	server {{.Node}} {{.Node}}:{{.Port}} check{{end}}
