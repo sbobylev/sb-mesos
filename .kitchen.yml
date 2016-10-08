@@ -14,6 +14,8 @@ platforms:
             zookeeper_myid: "1"
           192.168.1.201:
             zookeeper_myid: "2"
+          192.168.1.203:
+            zookeeper_myid: "3"
       consul:
         first_master_host: "192.168.1.200"
 
@@ -27,7 +29,7 @@ suites:
       network:
       - ["public_network", {ip: "192.168.1.200", bridge: "wlp4s0"}]
       customize:
-        memory: 2048
+        memory: 1024
     run_list:
       - recipe[sb-mesos::mesos-yum-repos]
       - recipe[sb-mesos::mesos-service-discovery]
@@ -41,7 +43,21 @@ suites:
       network:
       - ["public_network", {ip: "192.168.1.201", bridge: "wlp4s0"}]
       customize:
-        memory: 2048
+        memory: 1024
+    run_list:
+      - recipe[sb-mesos::mesos-yum-repos]
+      - recipe[sb-mesos::mesos-service-discovery]
+      - recipe[sb-mesos::mesos-master]
+    attributes:
+      mesos:
+        primary_nic: "eth1"
+  - name: mesos-master-3
+    driver:
+      vm_hostname: mesos-master-3
+      network:
+      - ["public_network", {ip: "192.168.1.202", bridge: "wlp4s0"}]
+      customize:
+        memory: 1024
     run_list:
       - recipe[sb-mesos::mesos-yum-repos]
       - recipe[sb-mesos::mesos-service-discovery]

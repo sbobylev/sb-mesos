@@ -19,12 +19,22 @@ service 'zookeeper' do
   action [ :enable, :start ]
   subscribes :restart, 'template[/etc/zookeeper/conf/zoo.cfg]', :delayed
   subscribes :restart, 'template[/etc/mesos-master/cluster]', :delayed
+  subscribes :restart, 'template[/etc/mesos-master/hostname]', :delayed
+  subscribes :restart, 'template[/etc/mesos-master/ip]', :delayed
+  subscribes :restart, 'template[/etc/mesos-master/quorum]', :delayed
+  subscribes :restart, 'template[/etc/mesos-master/work_dir]', :delayed
 end
 
 service 'mesos-master' do
   supports :status => true, :restart => true
   action [ :enable, :start ]
   action :start
+  subscribes :restart, 'template[/etc/zookeeper/conf/zoo.cfg]', :delayed
+  subscribes :restart, 'template[/etc/mesos-master/cluster]', :delayed
+  subscribes :restart, 'template[/etc/mesos-master/hostname]', :delayed
+  subscribes :restart, 'template[/etc/mesos-master/ip]', :delayed
+  subscribes :restart, 'template[/etc/mesos-master/quorum]', :delayed
+  subscribes :restart, 'template[/etc/mesos-master/work_dir]', :delayed
 end
 
 file '/var/lib/zookeeper/myid' do
@@ -53,6 +63,34 @@ end
 
 template '/etc/mesos-master/cluster' do
   source 'mesos_master_cluster_name.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
+template '/etc/mesos-master/hostname' do
+  source 'mesos_master_hostname.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
+template '/etc/mesos-master/ip' do
+  source 'mesos_master_ip.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
+template '/etc/mesos-master/quorum' do
+  source 'mesos_master_quorum.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
+template '/etc/mesos-master/work_dir' do
+  source 'mesos_master_work_dir.erb'
   owner 'root'
   group 'root'
   mode '0644'
